@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registry',
 ]
+CSRF_TRUSTED_ORIGINS = ['https://hashchain.up.railway.app']
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
