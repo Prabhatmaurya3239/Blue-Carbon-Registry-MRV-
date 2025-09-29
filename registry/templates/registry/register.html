@@ -1,0 +1,217 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}Register - Blue Carbon MRV{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-lg" data-aos="zoom-in">
+            <div class="card-header bg-success text-white text-center py-4">
+                <div class="mb-3">
+                    <i class="bi bi-person-plus-fill" style="font-size: 3rem;"></i>
+                </div>
+                <h3 class="mb-0">Join Blue Carbon MRV</h3>
+                <p class="mb-0 opacity-75">Create your account to start contributing to carbon restoration</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" id="registerForm">
+                    {% csrf_token %}
+                    
+                     Account Information 
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="bi bi-person-circle me-2"></i>Account Information
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.username.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-at me-2 text-primary"></i>Username
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary-subtle">
+                                        <i class="bi bi-person text-primary"></i>
+                                    </span>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-envelope me-2 text-info"></i>Email Address
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-info-subtle">
+                                        <i class="bi bi-envelope-fill text-info"></i>
+                                    </span>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     Organization Information 
+                    <div class="mb-4">
+                        <h5 class="text-success mb-3">
+                            <i class="bi bi-building me-2"></i>Organization Details
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.role.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-person-badge me-2 text-success"></i>Role
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-success-subtle">
+                                        <i class="bi bi-shield text-success"></i>
+                                    </span>
+                                    {{ form.role }}
+                                </div>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Choose your organization type
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.organization.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-building me-2 text-warning"></i>Organization Name
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-warning-subtle">
+                                        <i class="bi bi-building-fill text-warning"></i>
+                                    </span>
+                                    {{ form.organization }}
+                                </div>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Optional - Your organization name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     Security Information 
+                    <div class="mb-4">
+                        <h5 class="text-danger mb-3">
+                            <i class="bi bi-lock me-2"></i>Security
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.password1.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-key me-2 text-danger"></i>Password
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-danger-subtle">
+                                        <i class="bi bi-lock-fill text-danger"></i>
+                                    </span>
+                                    {{ form.password1 }}
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-key me-2 text-danger"></i>Confirm Password
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-danger-subtle">
+                                        <i class="bi bi-lock-fill text-danger"></i>
+                                    </span>
+                                    {{ form.password2 }}
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     Role Information 
+                    <div class="alert alert-info border-0 shadow-sm" data-aos="fade-up">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-info-circle-fill fs-4 text-info me-3 mt-1"></i>
+                            <div>
+                                <h6 class="alert-heading mb-2">Account Types</h6>
+                                <ul class="mb-0 small">
+                                    <li><strong>NGO:</strong> Non-governmental organizations working on restoration projects</li>
+                                    <li><strong>Community:</strong> Local communities involved in blue carbon restoration</li>
+                                    <li><strong>Admin:</strong> Platform administrators (restricted access)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                     Form Actions 
+                    <div class="d-flex gap-3 justify-content-between">
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-arrow-left me-2"></i>Already have an account?
+                        </a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-person-plus me-2"></i>Create Account
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-center py-3">
+                <small class="text-muted">
+                    <i class="bi bi-shield-check me-1"></i>
+                    By registering, you agree to contribute to sustainable blue carbon restoration
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password toggle functionality
+    function setupPasswordToggle(toggleId, inputName) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.querySelector(`input[name="${inputName}"]`);
+        
+        if (toggle && input) {
+            toggle.addEventListener('click', function() {
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                icon.classList.toggle('bi-eye');
+                icon.classList.toggle('bi-eye-slash');
+            });
+        }
+    }
+    
+    setupPasswordToggle('togglePassword1', 'password1');
+    setupPasswordToggle('togglePassword2', 'password2');
+    
+    // Form validation
+    const form = document.getElementById('registerForm');
+    const inputs = form.querySelectorAll('input, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+            } else {
+                this.classList.remove('is-valid');
+            }
+        });
+    });
+    
+    // Password match validation
+    const password1 = document.querySelector('input[name="password1"]');
+    const password2 = document.querySelector('input[name="password2"]');
+    
+    if (password1 && password2) {
+        password2.addEventListener('input', function() {
+            if (this.value === password1.value && this.value !== '') {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+            } else if (this.value !== '') {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

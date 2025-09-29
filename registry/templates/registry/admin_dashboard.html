@@ -1,0 +1,319 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}Admin Dashboard - Blue Carbon MRV{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4" data-aos="fade-down">
+    <div class="col-12">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-2">
+                            <i class="bi bi-shield-check-fill me-2"></i>
+                            Admin Dashboard (NCCR)
+                        </h2>
+                        <p class="mb-0 opacity-75">
+                            <i class="bi bi-person-badge me-2"></i>National Climate Change Registry
+                        </p>
+                        <small class="opacity-75">
+                            <i class="bi bi-clock me-2"></i>{{ pending_records.count }} records pending verification
+                        </small>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="text-end">
+                            <h4 class="mb-0">{{ total_credits|floatformat:0 }}</h4>
+                            <small class="opacity-75">Total Credits Issued</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-geo-alt-fill fs-1 text-primary"></i>
+                </div>
+                <h3 class="fw-bold text-primary mb-1">{{ all_sites.count }}</h3>
+                <p class="text-muted mb-2">Total Sites</p>
+                <small class="text-success">
+                    <i class="bi bi-arrow-up me-1"></i>All registered sites
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-clock-fill fs-1 text-warning"></i>
+                </div>
+                <h3 class="fw-bold text-warning mb-1">{{ pending_records.count }}</h3>
+                <p class="text-muted mb-2">Pending Verification</p>
+                <small class="text-warning">
+                    <i class="bi bi-exclamation-triangle me-1"></i>Requires attention
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-check-circle-fill fs-1 text-success"></i>
+                </div>
+                <h3 class="fw-bold text-success mb-1">{{ all_records.count }}</h3>
+                <p class="text-muted mb-2">Total Records</p>
+                <small class="text-success">
+                    <i class="bi bi-graph-up me-1"></i>All submissions
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-coin fs-1 text-info"></i>
+                </div>
+                <h3 class="fw-bold text-info mb-1">{{ total_credits|floatformat:0 }}</h3>
+                <p class="text-muted mb-2">Credits Issued</p>
+                <small class="text-info">
+                    <i class="bi bi-award me-1"></i>Blockchain verified
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if pending_records %}
+<div class="card border-0 shadow-sm mb-4" data-aos="fade-up">
+    <div class="card-header bg-warning bg-opacity-10 border-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-warning">
+                <i class="bi bi-clock-fill me-2"></i>Pending Verification
+            </h5>
+            <span class="badge bg-warning">{{ pending_records.count }} records</span>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="border-0">Species</th>
+                        <th class="border-0">Project Site</th>
+                        <th class="border-0">Plants</th>
+                        <th class="border-0">Date Planted</th>
+                        <th class="border-0">Uploaded By</th>
+                        <th class="border-0">Evidence</th>
+                        <th class="border-0">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in pending_records %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold">{{ record.species }}</div>
+                                <small class="text-muted">{{ record.project_site.get_ecosystem_type_display }}</small>
+                            </td>
+                            <td>
+                                <div>{{ record.project_site.name }}</div>
+                                <small class="text-muted">{{ record.project_site.area_ha }} ha</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary-subtle text-primary">
+                                    {{ record.number_of_plants|floatformat:0 }}
+                                </span>
+                            </td>
+                            <td>{{ record.date_planted|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-circle me-2 text-muted"></i>
+                                    <div>
+                                        <div class="fw-bold">{{ record.uploaded_by.username }}</div>
+                                        <small class="text-muted">{{ record.uploaded_by.organization|default:"No org" }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if record.uploaded_images %}
+                                    <a href="{{ record.uploaded_images.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-image me-1"></i>View Image
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">
+                                        <i class="bi bi-image me-1"></i>No image
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                              <form method="post" action="{% url 'verify_record' record.id %}" class="d-inline">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="">
+    <div class="btn-group" role="group">
+        <button type="submit" onclick="this.form.action.value='approve'" class="btn btn-sm btn-success">
+            <i class="bi bi-check-lg"></i>
+        </button>
+        <button type="submit" onclick="this.form.action.value='reject'" class="btn btn-sm btn-danger">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+</form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+ 
+<div class="row g-4">
+    <div class="col-lg-8" data-aos="fade-right">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0">
+                <h5 class="mb-0">
+                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>All Project Sites
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0">Project Name</th>
+                                <th class="border-0">Ecosystem</th>
+                                <th class="border-0">Area (ha)</th>
+                                <th class="border-0">Owner</th>
+                                <th class="border-0">Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for site in all_sites|slice:":10" %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">{{ site.name }}</div>
+                                        <small class="text-muted">{{ site.location_lat|floatformat:2 }}, {{ site.location_lng|floatformat:2 }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success-subtle text-success">
+                                            {{ site.get_ecosystem_type_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ site.area_ha }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person-circle me-2 text-muted"></i>
+                                            <div>
+                                                <div>{{ site.created_by.username }}</div>
+                                                <small class="text-muted">{{ site.created_by.get_role_display }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ site.created_date|date:"M d, Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4" data-aos="fade-left">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-gradient-success text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-award-fill me-2"></i>Recent Carbon Credits
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if all_credits %}
+                    {% for credit in all_credits|slice:":5" %}
+                        <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
+                            <div class="flex-shrink-0">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-coin text-success fs-5"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-0 text-success">{{ credit.credits_issued }} Credits</h6>
+                                        <small class="text-muted">{{ credit.project_site.name }}</small>
+                                    </div>
+                                    <small class="text-muted">{{ credit.issued_date|date:"M d" }}</small>
+                                </div>
+                                <div class="mt-1">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar me-1"></i>Year {{ credit.year }}
+                                    </small>
+                                </div>
+                                <div class="mt-1">
+                                    <small class="text-muted font-monospace">
+                                        {{ credit.txn_hash|truncatechars:20 }}...
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-coin text-muted" style="font-size: 3rem;"></i>
+                        <h6 class="text-muted mt-2">No carbon credits issued yet</h6>
+                        <small class="text-muted">Credits will appear here after verification</small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-gradient-info text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-graph-up-arrow me-2"></i>System Overview
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h4 class="text-primary mb-0">{{ all_sites.count }}</h4>
+                            <small class="text-muted">Total Sites</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success mb-0">{{ all_records.count }}</h4>
+                        <small class="text-muted">All Records</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <h3 class="text-warning mb-0">{{ pending_records.count }}</h3>
+                    <small class="text-muted">Pending Verification</small>
+                </div>
+                <div class="progress mt-3" style="height: 8px;">
+                    <div class="progress-bar bg-success" role="progressbar" 
+                         style="width: {% widthratio all_records.count all_records.count 100 %}%">
+                    </div>
+                </div>
+                <small class="text-muted">
+                    Platform Activity: Active
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,255 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}Add Project Site - Blue Carbon MRV{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+         
+        <div class="mb-4" data-aos="fade-down">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'ngo_dashboard' %}" class="text-decoration-none">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Add Project Site</li>
+                </ol>
+            </nav>
+            <h2 class="mb-0">
+                <i class="bi bi-plus-circle-fill text-primary me-2"></i>
+                Create New Project Site
+            </h2>
+            <p class="text-muted">Register a new blue carbon restoration site for monitoring and verification</p>
+        </div>
+
+        <div class="row g-4">
+           
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            Project Site Details
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" id="projectForm">
+                            {% csrf_token %}
+                            
+                        
+                            <div class="mb-4">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-info-circle me-2"></i>Basic Information
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-tag me-2 text-primary"></i>Project Name
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary-subtle">
+                                                <i class="bi bi-building text-primary"></i>
+                                            </span>
+                                            {{ form.name }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-lightbulb me-1"></i>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="{{ form.ecosystem_type.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-tree me-2 text-success"></i>Ecosystem Type
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-success-subtle">
+                                                <i class="bi bi-water text-success"></i>
+                                            </span>
+                                            {{ form.ecosystem_type }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                
+                            <div class="mb-4">
+                                <h5 class="text-info mb-3">
+                                    <i class="bi bi-geo me-2"></i>Location Coordinates
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="{{ form.location_lat.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-compass me-2 text-info"></i>Latitude
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-info-subtle">
+                                                <i class="bi bi-geo-alt text-info"></i>
+                                            </span>
+                                            {{ form.location_lat }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Example: 19.0760
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="{{ form.location_lng.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-compass me-2 text-info"></i>Longitude
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-info-subtle">
+                                                <i class="bi bi-geo-alt text-info"></i>
+                                            </span>
+                                            {{ form.location_lng }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Example: 72.8777
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="{{ form.area_ha.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-rulers me-2 text-warning"></i>Area (Hectares)
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-warning-subtle">
+                                                <i class="bi bi-bounding-box text-warning"></i>
+                                            </span>
+                                            {{ form.area_ha }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-calculator me-1"></i>
+                                            Total restoration area
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                            <div class="alert alert-info border-0 shadow-sm" data-aos="fade-up">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-info-circle-fill fs-4 text-info me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="alert-heading mb-2">Important Information</h6>
+                                        <p class="mb-0">
+                                            Please ensure all coordinates and measurements are accurate. 
+                                            This information will be used for carbon credit calculations and verification processes.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="d-flex gap-3 justify-content-end">
+                                <a href="{% url 'ngo_dashboard' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="bi bi-check-circle me-2"></i>Create Project Site
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4" data-aos="fade-left">
+                 
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-question-circle-fill me-2"></i>Need Help?
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="fw-bold">
+                                <i class="bi bi-geo-alt text-primary me-2"></i>Getting Coordinates
+                            </h6>
+                            <p class="small text-muted mb-0">
+                                Use Google Maps or GPS devices to get accurate latitude and longitude coordinates for your project site.
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="fw-bold">
+                                <i class="bi bi-rulers text-warning me-2"></i>Measuring Area
+                            </h6>
+                            <p class="small text-muted mb-0">
+                                Use satellite imagery or ground surveys to determine the total area of your restoration site in hectares.
+                            </p>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">
+                                <i class="bi bi-tree text-success me-2"></i>Ecosystem Types
+                            </h6>
+                            <ul class="small text-muted mb-0">
+                                <li><strong>Mangrove:</strong> Coastal forest ecosystems</li>
+                                <li><strong>Seagrass:</strong> Underwater flowering plants</li>
+                                <li><strong>Salt Marsh:</strong> Coastal wetlands</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                 
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-list-check me-2"></i>Next Steps
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="bi bi-1-circle-fill text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Create Project Site</h6>
+                                <small class="text-muted">Current step</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-secondary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="bi bi-2-circle text-secondary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Upload Plantation Records</h6>
+                                <small class="text-muted">Next step</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="bg-secondary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="bi bi-3-circle text-secondary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Earn Carbon Credits</h6>
+                                <small class="text-muted">After verification</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form validation feedback
+    const form = document.getElementById('projectForm');
+    const inputs = form.querySelectorAll('input, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value.trim() !== '') {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

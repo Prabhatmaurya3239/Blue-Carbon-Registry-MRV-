@@ -1,0 +1,250 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}Upload Record - Blue Carbon MRV{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+        <div class="mb-4" data-aos="fade-down">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'ngo_dashboard' %}" class="text-decoration-none">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Upload Plantation Record</li>
+                </ol>
+            </nav>
+            <h2 class="mb-0">
+                <i class="bi bi-cloud-upload-fill text-success me-2"></i>
+                Upload Plantation Record
+            </h2>
+            <p class="text-muted">Document your restoration activities for verification and carbon credit generation</p>
+        </div>
+
+        <div class="row g-4">
+             
+            <div class="col-lg-8" data-aos="fade-right">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-clipboard-data-fill me-2"></i>
+                            Plantation Details
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" enctype="multipart/form-data" id="recordForm">
+                            {% csrf_token %}
+                            
+                            
+                            <div class="mb-4">
+                                <h5 class="text-primary mb-3">
+                                    <i class="bi bi-calendar-event me-2"></i>Project & Timeline
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label for="{{ form.project_site.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-geo-alt me-2 text-primary"></i>Project Site
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary-subtle">
+                                                <i class="bi bi-building text-primary"></i>
+                                            </span>
+                                            {{ form.project_site }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Select the project site where plantation was done
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="{{ form.date_planted.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-calendar me-2 text-info"></i>Date Planted
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-info-subtle">
+                                                <i class="bi bi-calendar-date text-info"></i>
+                                            </span>
+                                            {{ form.date_planted }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                            <div class="mb-4">
+                                <h5 class="text-success mb-3">
+                                    <i class="bi bi-tree me-2"></i>Plantation Details
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label for="{{ form.species.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-flower1 me-2 text-success"></i>Species Name
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-success-subtle">
+                                                <i class="bi bi-tree-fill text-success"></i>
+                                            </span>
+                                            {{ form.species }}
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-lightbulb me-1"></i>
+                                            Example: Rhizophora mucronata, Avicennia marina
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="{{ form.number_of_plants.id_for_label }}" class="form-label fw-bold">
+                                            <i class="bi bi-123 me-2 text-warning"></i>Number of Plants
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-warning-subtle">
+                                                <i class="bi bi-hash text-warning"></i>
+                                            </span>
+                                            {{ form.number_of_plants }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5 class="text-info mb-3">
+                                    <i class="bi bi-camera me-2"></i>Evidence Documentation
+                                </h5>
+                                <label for="{{ form.uploaded_images.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-image me-2 text-info"></i>Upload Image Evidence
+                                </label>
+                                <div class="border border-2 border-dashed border-info rounded p-4 text-center bg-info-subtle">
+                                    <i class="bi bi-cloud-upload fs-1 text-info mb-3"></i>
+                                    {{ form.uploaded_images }}
+                                    <div class="mt-2">
+                                        <p class="mb-1 fw-bold">Drag and drop your image here or click to browse</p>
+                                        <small class="text-muted">
+                                            Upload clear photos showing the plantation/restoration work (JPG, PNG, max 10MB)
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                      
+                            <div class="alert alert-warning border-0 shadow-sm" data-aos="fade-up">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-exclamation-triangle-fill fs-4 text-warning me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="alert-heading mb-2">Verification Process</h6>
+                                        <p class="mb-0">
+                                            All records must be verified by NCCR admin before carbon credits can be issued.
+                                            Please ensure all information is accurate and upload clear evidence photos to expedite the verification process.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                         
+                            <div class="d-flex gap-3 justify-content-end">
+                                <a href="{% url 'ngo_dashboard' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="bi bi-cloud-upload me-2"></i>Upload Record
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4" data-aos="fade-left">
+                 
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-gradient-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="bi bi-calculator me-2"></i>Carbon Credit Estimate
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-coin fs-1 text-warning"></i>
+                            <h4 class="text-warning mt-2">~0.5 Credits</h4>
+                            <small class="text-muted">Per plant (base rate)</small>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="fw-bold">Ecosystem Multipliers:</h6>
+                            <ul class="list-unstyled small">
+                                <li class="d-flex justify-content-between">
+                                    <span><i class="bi bi-water text-primary me-1"></i>Mangrove:</span>
+                                    <span class="badge bg-primary">1.5x</span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span><i class="bi bi-tsunami text-info me-1"></i>Seagrass:</span>
+                                    <span class="badge bg-info">1.2x</span>
+                                </li>
+                                <li class="d-flex justify-content-between">
+                                    <span><i class="bi bi-moisture text-success me-1"></i>Salt Marsh:</span>
+                                    <span class="badge bg-success">1.0x</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-info border-0 small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Final credits calculated after admin verification
+                        </div>
+                    </div>
+                </div>
+
+          
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-info text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-camera-fill me-2"></i>Photo Guidelines
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="fw-bold text-success">
+                                <i class="bi bi-check-circle me-2"></i>Good Photos Include:
+                            </h6>
+                            <ul class="small text-muted">
+                                <li>Clear view of planted area</li>
+                                <li>Close-up of planted species</li>
+                                <li>GPS coordinates visible</li>
+                                <li>Date stamp if possible</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-danger">
+                                <i class="bi bi-x-circle me-2"></i>Avoid:
+                            </h6>
+                            <ul class="small text-muted">
+                                <li>Blurry or dark images</li>
+                                <li>Photos without context</li>
+                                <li>Old or unrelated images</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File upload preview
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Add preview functionality here if needed
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

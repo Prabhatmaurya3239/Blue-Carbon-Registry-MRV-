@@ -1,0 +1,306 @@
+{% extends 'registry/base.html' %}
+
+{% block content %}
+
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="jumbotron text-white p-5 rounded position-relative" data-aos="fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="bi bi-shield-check-fill me-3 pulse"></i>
+                        Blue Carbon MRV Registry
+                    </h1>
+                    <p class="lead mb-4">
+                        Blockchain-powered Monitoring, Reporting & Verification system for Blue Carbon ecosystems. 
+                        Join the revolution in transparent carbon credit generation.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        {% if not user.is_authenticated %}
+                            <a class="btn btn-light btn-lg" href="{% url 'register' %}" role="button">
+                                <i class="bi bi-person-plus me-2"></i>Get Started
+                            </a>
+                            <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}" role="button">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                            </a>
+                        {% else %}
+                            <a class="btn btn-light btn-lg" href="{% if user.role == 'ADMIN' %}{% url 'admin_dashboard' %}{% else %}{% url 'ngo_dashboard' %}{% endif %}" role="button">
+                                <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="position-relative">
+                        <i class="bi bi-globe-americas" style="font-size: 8rem; opacity: 0.3;"></i>
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <i class="bi bi-tree-fill text-success" style="font-size: 3rem;" data-aos="zoom-in" data-aos-delay="500"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-geo-alt-fill stats-icon text-primary"></i>
+                <h2 class="card-title fw-bold text-primary">{{ total_sites }}</h2>
+                <p class="card-text text-muted">Project Sites</p>
+                <small class="text-muted">
+                    <i class="bi bi-arrow-up text-success me-1"></i>
+                    Active restoration sites
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-clipboard-data-fill stats-icon text-info"></i>
+                <h2 class="card-title fw-bold text-info">{{ total_records }}</h2>
+                <p class="card-text text-muted">Total Records</p>
+                <small class="text-muted">
+                    <i class="bi bi-cloud-upload text-info me-1"></i>
+                    Plantation records uploaded
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-patch-check-fill stats-icon text-success"></i>
+                <h2 class="card-title fw-bold text-success">{{ verified_records }}</h2>
+                <p class="card-text text-muted">Verified Records</p>
+                <small class="text-muted">
+                    <i class="bi bi-shield-check text-success me-1"></i>
+                    Admin verified
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-coin stats-icon text-warning"></i>
+                <h2 class="card-title fw-bold text-warning">{{ total_credits|floatformat:0 }}</h2>
+                <p class="card-text text-muted">Carbon Credits</p>
+                <small class="text-muted">
+                    <i class="bi bi-graph-up text-warning me-1"></i>
+                    Credits issued
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="row">
+    <div class="col-lg-8" data-aos="fade-right">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    About Blue Carbon MRV
+                </h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    Our platform enables NGOs and communities to register blue carbon restoration projects, 
+                    upload plantation records with verification, and receive blockchain-verified carbon credits 
+                    for their environmental conservation efforts.
+                </p>
+                
+                <div class="row g-4 mt-3">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-geo-alt-fill fs-3 text-primary me-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Project Registration</h5>
+                                <p class="text-muted mb-0">Register mangrove, seagrass, and salt marsh restoration sites with precise geolocation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-cloud-upload-fill fs-3 text-info me-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Evidence Upload</h5>
+                                <p class="text-muted mb-0">Upload plantation data with photos and detailed species information for verification.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-shield-check-fill fs-3 text-success me-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Admin Verification</h5>
+                                <p class="text-muted mb-0">NCCR admins verify and approve restoration activities through rigorous review process.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-link-45deg fs-3 text-warning me-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold">Blockchain Integration</h5>
+                                <p class="text-muted mb-0">Generate verifiable carbon credits with immutable blockchain transaction hashes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-tree-fill me-2"></i>
+                    Supported Ecosystems
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 rounded bg-light">
+                            <i class="bi bi-water fs-1 text-primary mb-2"></i>
+                            <h5 class="fw-bold">Mangroves</h5>
+                            <p class="text-muted small mb-0">Coastal forest ecosystems with high carbon sequestration potential</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 rounded bg-light">
+                            <i class="bi bi-tsunami fs-1 text-info mb-2"></i>
+                            <h5 class="fw-bold">Seagrass</h5>
+                            <p class="text-muted small mb-0">Underwater flowering plants that store carbon in sediments</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-3 rounded bg-light">
+                            <i class="bi bi-moisture fs-1 text-success mb-2"></i>
+                            <h5 class="fw-bold">Salt Marsh</h5>
+                            <p class="text-muted small mb-0">Coastal wetlands that capture and store atmospheric carbon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
+    <div class="col-lg-4" data-aos="fade-left">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-geo-fill me-2"></i>
+                    Global Impact Map
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15078080.388616!2d73.7250245!3d20.750301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1635784800000!5m2!1sen!2sin"
+                    width="100%" 
+                    height="250" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <i class="bi bi-pin-map me-1"></i>
+                    Restoration sites across coastal regions
+                </small>
+            </div>
+        </div>
+
+      
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning-charge-fill me-2"></i>
+                    Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if user.is_authenticated %}
+                    {% if user.role != 'ADMIN' %}
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'add_project' %}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Add New Project
+                            </a>
+                            <a href="{% url 'upload_record' %}" class="btn btn-success">
+                                <i class="bi bi-cloud-upload me-2"></i>Upload Record
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">
+                                <i class="bi bi-speedometer2 me-2"></i>Admin Dashboard
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'register' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus me-2"></i>Join Platform
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-activity me-2"></i>
+                    Platform Stats
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h4 class="text-primary mb-0">{{ total_sites }}</h4>
+                            <small class="text-muted">Active Sites</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success mb-0">{{ verified_records }}</h4>
+                        <small class="text-muted">Verified</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <h3 class="text-warning mb-0">{{ total_credits|floatformat:0 }}</h3>
+                    <small class="text-muted">Total Carbon Credits Issued</small>
+                </div>
+                <div class="progress mt-3" style="height: 8px;">
+                    <div class="progress-bar bg-success" role="progressbar" 
+                         style="width: {% widthratio verified_records total_records 100 %}%">
+                    </div>
+                </div>
+                <small class="text-muted">
+                    Verification Rate: {% widthratio verified_records total_records 100 %}%
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

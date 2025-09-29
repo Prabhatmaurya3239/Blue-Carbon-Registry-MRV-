@@ -1,0 +1,308 @@
+{% extends 'registry/base.html' %}
+
+{% block title %}Dashboard - Blue Carbon MRV{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4" data-aos="fade-down">
+    <div class="col-12">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-2">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            Welcome back, {{ user.first_name|default:user.username }}!
+                        </h2>
+                        <p class="mb-0 opacity-75">
+                            <i class="bi bi-building me-2"></i>{{ user.organization|default:"Independent Contributor" }}
+                        </p>
+                        <small class="opacity-75">
+                            <i class="bi bi-person-badge me-2"></i>{{ user.get_role_display }} Dashboard
+                        </small>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'add_project' %}" class="btn btn-light">
+                                <i class="bi bi-plus-circle me-1"></i>Add Project
+                            </a>
+                            <a href="{% url 'upload_record' %}" class="btn btn-outline-light">
+                                <i class="bi bi-cloud-upload me-1"></i>Upload Record
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-geo-alt-fill fs-1 text-primary"></i>
+                </div>
+                <h3 class="fw-bold text-primary mb-1">{{ user_sites.count }}</h3>
+                <p class="text-muted mb-2">My Project Sites</p>
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-primary" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-clipboard-data-fill fs-1 text-info"></i>
+                </div>
+                <h3 class="fw-bold text-info mb-1">{{ user_records.count }}</h3>
+                <p class="text-muted mb-2">Uploaded Records</p>
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-info" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-patch-check-fill fs-1 text-success"></i>
+                </div>
+                <h3 class="fw-bold text-success mb-1">{{ user_records|length }}</h3>
+                <p class="text-muted mb-2">Verified Records</p>
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+        <div class="card text-center h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                    <i class="bi bi-coin fs-1 text-warning"></i>
+                </div>
+                <h3 class="fw-bold text-warning mb-1">{{ total_credits|floatformat:0 }}</h3>
+                <p class="text-muted mb-2">Carbon Credits Earned</p>
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-warning" style="width: 90%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-4">
+    <div class="col-lg-8" data-aos="fade-right">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>My Project Sites
+                </h5>
+                <a href="{% url 'add_project' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i>Add New Site
+                </a>
+            </div>
+            <div class="card-body">
+                {% if user_sites %}
+                    <div class="row g-3">
+                        {% for site in user_sites %}
+                            <div class="col-md-6">
+                                <div class="card border-start border-primary border-4 h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="fw-bold mb-0">{{ site.name }}</h6>
+                                            <span class="badge bg-primary-subtle text-primary">{{ site.get_ecosystem_type_display }}</span>
+                                        </div>
+                                        <div class="row g-2 text-sm">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">
+                                                    <i class="bi bi-rulers me-1"></i>Area
+                                                </small>
+                                                <strong>{{ site.area_ha }} ha</strong>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">
+                                                    <i class="bi bi-calendar me-1"></i>Created
+                                                </small>
+                                                <strong>{{ site.created_date|date:"M d, Y" }}</strong>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small class="text-muted">
+                                                <i class="bi bi-geo me-1"></i>{{ site.location_lat|floatformat:4 }}, {{ site.location_lng|floatformat:4 }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-geo-alt text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="text-muted mt-3">No project sites yet</h5>
+                        <p class="text-muted">Start by adding your first restoration project site.</p>
+                        <a href="{% url 'add_project' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>Add Your First Project
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+ 
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-clipboard-data-fill text-info me-2"></i>Recent Plantation Records
+                </h5>
+                <a href="{% url 'upload_record' %}" class="btn btn-info btn-sm">
+                    <i class="bi bi-cloud-upload me-1"></i>Upload New Record
+                </a>
+            </div>
+            <div class="card-body">
+                {% if user_records %}
+                    <div class="row g-3">
+                        {% for record in user_records|slice:":6" %}
+                            <div class="col-md-6">
+                                <div class="card border-start border-info border-4 h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="fw-bold mb-0">{{ record.species }}</h6>
+                                            {% if record.verified %}
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle me-1"></i>Verified
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-clock me-1"></i>Pending
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-muted small mb-2">{{ record.project_site.name }}</p>
+                                        <div class="row g-2 text-sm">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">
+                                                    <i class="bi bi-tree me-1"></i>Plants
+                                                </small>
+                                                <strong>{{ record.number_of_plants|floatformat:0 }}</strong>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">
+                                                    <i class="bi bi-calendar me-1"></i>Planted
+                                                </small>
+                                                <strong>{{ record.date_planted|date:"M d, Y" }}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-clipboard-data text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="text-muted mt-3">No plantation records yet</h5>
+                        <p class="text-muted">Upload your first plantation record to start earning carbon credits.</p>
+                        <a href="{% url 'upload_record' %}" class="btn btn-info">
+                            <i class="bi bi-cloud-upload me-2"></i>Upload Your First Record
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+     
+    <div class="col-lg-4" data-aos="fade-left">
+    
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-gradient-success text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightning-charge-fill me-2"></i>Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'add_project' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Project Site
+                    </a>
+                    <a href="{% url 'upload_record' %}" class="btn btn-outline-success">
+                        <i class="bi bi-cloud-upload me-2"></i>Upload Plantation Record
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-info">
+                        <i class="bi bi-house me-2"></i>View Platform Stats
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-graph-up text-success me-2"></i>Your Progress
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="text-muted">Project Sites</small>
+                        <small class="text-muted">{{ user_sites.count }}/10</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-primary" style="width: {% widthratio user_sites.count 10 100 %}%"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="text-muted">Records Uploaded</small>
+                        <small class="text-muted">{{ user_records.count }}</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-info" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <h4 class="text-success mb-0">{{ total_credits|floatformat:0 }}</h4>
+                    <small class="text-muted">Total Carbon Credits Earned</small>
+                </div>
+            </div>
+        </div>
+
+        {% if user_credits %}
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-gradient-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="bi bi-award-fill me-2"></i>Latest Carbon Credits
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for credit in user_credits|slice:":3" %}
+                    <div class="d-flex align-items-center mb-3 p-2 bg-light rounded">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-coin text-success"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0 text-success">{{ credit.credits_issued }} Credits</h6>
+                            <small class="text-muted">{{ credit.project_site.name }}</small>
+                            <div class="mt-1">
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar me-1"></i>{{ credit.issued_date|date:"M d, Y" }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
